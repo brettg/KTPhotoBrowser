@@ -12,6 +12,7 @@
 
 
 @interface KTThumbsViewController (Private)
+- (CGRect)scrollViewFrame;
 @end
 
 
@@ -25,12 +26,12 @@
    [super dealloc];
 }
 
-- (void)loadView {
+- (void)viewDidLoad {
    // Make sure to set wantsFullScreenLayout or the photo
    // will not display behind the status bar.
    [self setWantsFullScreenLayout:YES];
 
-   KTThumbsView *scrollView = [[KTThumbsView alloc] initWithFrame:CGRectZero];
+   KTThumbsView *scrollView = [[KTThumbsView alloc] initWithFrame:[self scrollViewFrame]];
    [scrollView setController:self];
    [scrollView setScrollsToTop:YES];
    [scrollView setScrollEnabled:YES];
@@ -38,7 +39,8 @@
    [scrollView setBackgroundColor:[UIColor whiteColor]];
    
    // Set main view to the scroll view.
-   [self setView:scrollView];
+   //[self setView:scrollView];
+  [self.view addSubview:scrollView];
    
    // Retain a reference to the scroll view.
    scrollView_ = scrollView;
@@ -103,6 +105,18 @@
   
    [[self navigationController] pushViewController:newController animated:YES];
    [newController release];
+}
+
+// Determine if status bar or Nav bar are hidden???
+- (CGRect)scrollViewFrame {
+  CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+  CGRect navBarFrame = self.navigationController.navigationBar.frame;
+  int barsHeight = statusBarFrame.size.height + navBarFrame.size.height;
+  CGRect viewBounds = self.view.bounds;
+  return CGRectMake(0, 
+                    barsHeight, 
+                    viewBounds.size.width,
+                    viewBounds.size.height - barsHeight);
 }
 
 @end
