@@ -28,10 +28,6 @@
 }
 
 - (void)loadView {
-   // Make sure to set wantsFullScreenLayout or the photo
-   // will not display behind the status bar.
-   [self setWantsFullScreenLayout:YES];
-
    KTThumbsView *scrollView = [[KTThumbsView alloc] initWithFrame:CGRectZero];
    [scrollView setDataSource:self];
    [scrollView setController:self];
