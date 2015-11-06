@@ -39,7 +39,6 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 @implementation KTPhotoScrollViewController
 
 @synthesize statusBarStyle = statusBarStyle_;
-@synthesize statusbarHidden = statusbarHidden_;
 
 
 - (void)dealloc 
@@ -66,9 +65,6 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    if (self = [super init]) {
      startWithIndex_ = index;
      dataSource_ = [dataSource retain];
-
-     BOOL isStatusbarHidden = [[UIApplication sharedApplication] isStatusBarHidden];
-     [self setStatusbarHidden:isStatusbarHidden];
      
      self.hidesBottomBarWhenPushed = YES;
    }
@@ -247,6 +243,10 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 {
    [self cancelChromeDisplayTimer];
    [super viewDidDisappear:animated];
+}
+
+- (BOOL)prefersStatusBarHidden{
+  return NO;
 }
 
 - (void)deleteCurrentPhoto 
@@ -440,7 +440,7 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    [self updateToolbarWithOrientation:toInterfaceOrientation];
    
    // Adjust navigation bar if needed.
-   if (isChromeHidden_ && statusbarHidden_ == NO) {
+   if (isChromeHidden_) {
       UINavigationBar *navbar = [[self navigationController] navigationBar];
       CGRect frame = [navbar frame];
       frame.origin.y = 20;
@@ -473,15 +473,6 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    if (hide) {
       [UIView beginAnimations:nil context:nil];
       [UIView setAnimationDuration:0.4];
-   }
-   
-   if ( ! [self isStatusbarHidden] ) {     
-     if ([[UIApplication sharedApplication] respondsToSelector:@selector(setStatusBarHidden:withAnimation:)]) {
-       [[UIApplication sharedApplication] setStatusBarHidden:hide withAnimation:NO];
-     } else {  // Deprecated in iOS 3.2+.
-       id sharedApp = [UIApplication sharedApplication];  // Get around deprecation warnings.
-       [sharedApp setStatusBarHidden:hide animated:NO];
-     }
    }
 
    CGFloat alpha = hide ? 0.0 : 1.0;
