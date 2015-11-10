@@ -74,6 +74,8 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 - (void)loadView 
 {
    [super loadView];
+
+   self.automaticallyAdjustsScrollViewInsets = false;
    
    CGRect scrollFrame = [self frameForPagingScrollView];
    UIScrollView *newView = [[UIScrollView alloc] initWithFrame:scrollFrame];
