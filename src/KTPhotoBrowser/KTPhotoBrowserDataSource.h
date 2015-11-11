@@ -31,6 +31,5 @@
 - (CGSize)thumbSize;
 - (NSInteger)thumbsPerRow;
 - (BOOL)thumbsHaveBorder;
-- (UIColor *)imageBackgroundColor;
 
 @end

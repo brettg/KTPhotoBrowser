@@ -82,8 +82,7 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    [newView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
    [newView setDelegate:self];
    
-   UIColor *backgroundColor = [dataSource_ respondsToSelector:@selector(imageBackgroundColor)] ?
-                                [dataSource_ imageBackgroundColor] : [UIColor blackColor];  
+   UIColor *backgroundColor = [UIColor whiteColor];
    [newView setBackgroundColor:backgroundColor];
    [newView setAutoresizesSubviews:YES];
    [newView setPagingEnabled:YES];
@@ -116,8 +115,7 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    }
    
    UIBarButtonItem *exportButton = nil;
-   if ([dataSource_ respondsToSelector:@selector(exportImageAtIndex:)])
-   {
+   if ([dataSource_ respondsToSelector:@selector(exportImageAtIndex:)]){
       exportButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
                                                                    target:self
                                                                    action:@selector(exportPhoto)];
@@ -145,7 +143,7 @@ const CGFloat ktkDefaultToolbarHeight = 44;
                                     ktkDefaultToolbarHeight);
    toolbar_ = [[UIToolbar alloc] initWithFrame:toolbarFrame];
    [toolbar_ setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin];
-   [toolbar_ setBarStyle:UIBarStyleBlackTranslucent];
+   [toolbar_ setBarStyle:UIBarStyleDefault];
    [toolbar_ setItems:toolbarItems];
    [[self view] addSubview:toolbar_];
    
@@ -471,28 +469,26 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 
 - (void)toggleChrome:(BOOL)hide 
 {
-   isChromeHidden_ = hide;
-   if (hide) {
-      [UIView beginAnimations:nil context:nil];
-      [UIView setAnimationDuration:0.4];
-   }
+  isChromeHidden_ = hide;
+  [UIView beginAnimations:nil context:nil];
+  [UIView setAnimationDuration: hide ? 0.3 : 0.2];
 
-   CGFloat alpha = hide ? 0.0 : 1.0;
+
+  CGFloat alpha = hide ? 0.0 : 1.0;
    
-   // Must set the navigation bar's alpha, otherwise the photo
-   // view will be pushed until the navigation bar.
-   UINavigationBar *navbar = [[self navigationController] navigationBar];
-   [navbar setAlpha:alpha];
+  // Must set the navigation bar's alpha, otherwise the photo
+  // view will be pushed until the navigation bar.
+  UINavigationBar *navbar = [[self navigationController] navigationBar];
+  [navbar setAlpha:alpha];
 
-   [toolbar_ setAlpha:alpha];
+  [toolbar_ setAlpha:alpha];
+  scrollView_.backgroundColor = hide ? [UIColor blackColor] : [UIColor whiteColor];
 
-   if (hide) {
-      [UIView commitAnimations];
-   }
+  [UIView commitAnimations];
    
-   if ( ! isChromeHidden_ ) {
-      [self startChromeDisplayTimer];
-   }
+  if ( ! isChromeHidden_ ) {
+    [self startChromeDisplayTimer];
+  }
 }
 
 - (void)hideChrome 

@@ -70,6 +70,7 @@
   }
   // Then ensure translucency to match the look of Apple's Photos app.
   [navbar setTranslucent:YES];
+  navbar.barStyle = UIBarStyleDefault;
   [super viewWillAppear:animated];
 }
 
