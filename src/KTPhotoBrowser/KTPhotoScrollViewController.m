@@ -537,12 +537,6 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 	}
 }
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView 
-{
-   [self hideChrome];
-}
-
-
 #pragma mark -
 #pragma mark Toolbar Actions
 
