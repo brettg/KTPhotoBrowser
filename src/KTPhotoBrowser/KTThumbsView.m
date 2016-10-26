@@ -92,7 +92,7 @@
    // Do a bunch of math to determine which rows and colums
    // are visible.
 
-   int itemsPerRow = thumbsPerRow_;
+   NSInteger itemsPerRow = thumbsPerRow_;
    if (itemsPerRow == NSIntegerMin) {
       itemsPerRow = floor(visibleWidth / thumbSize_.width);
    }
@@ -117,7 +117,7 @@
    int spaceHeight = spaceWidth;
    
    // Calculate content size.
-   int thumbCount = [dataSource_ thumbsViewNumberOfThumbs:self];
+   NSInteger thumbCount = [dataSource_ thumbsViewNumberOfThumbs:self];
    int rowCount = ceil(thumbCount / (float)itemsPerRow);
    int rowHeight = thumbSize_.height + spaceHeight;
    CGSize contentSize = CGSizeMake(visibleWidth, (rowHeight * rowCount + spaceHeight));
@@ -152,12 +152,12 @@
    NSInteger stopAtIndex = MIN(thumbCount, (bottomRow * itemsPerRow) + itemsPerRow);
 
    // Set our initial origin.
-   int x = spaceWidth;
-   int y = spaceHeight + (topRow * rowHeight);
+   NSInteger x = spaceWidth;
+   NSInteger y = spaceHeight + (topRow * rowHeight);
    
    // Iterate through the needed thumbnail views adding
    // any views that are missing.
-   for (int index = startAtIndex; index < stopAtIndex; index++) {
+   for (NSInteger index = startAtIndex; index < stopAtIndex; index++) {
       // If index is between first and last, then not missing.
       BOOL isThumbViewMissing = !(index >= firstVisibleIndex_ && index < lastVisibleIndex_);
 
