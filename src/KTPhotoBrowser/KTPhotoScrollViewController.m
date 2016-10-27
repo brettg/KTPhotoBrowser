@@ -552,13 +552,33 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 
 - (void)trashPhoto 
 {
-   UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                            delegate:self
-                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button text.")
-                                              destructiveButtonTitle:NSLocalizedString(@"Delete Photo", @"Delete Photo button text.")
-                                                   otherButtonTitles:nil];
-   [actionSheet showInView:[self view]];
-   [actionSheet release];
+  [self cancelChromeDisplayTimer];
+
+  UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:Nil
+                                    message:Nil
+                                    preferredStyle:UIAlertControllerStyleActionSheet];
+
+  [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",
+                                                                          @"Cancel button text.")
+                                                  style:UIAlertActionStyleCancel
+                                                handler:^(UIAlertAction *action) {
+    [self startChromeDisplayTimer];
+  }]];
+
+  [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete Photo",
+                                                                          @"Delete Photo button text.")
+                                                  style:UIAlertActionStyleDestructive
+                                                handler:^(UIAlertAction *action) {
+
+    [self deleteCurrentPhoto];
+    [self startChromeDisplayTimer];
+  }]];
+
+  if(actionSheet.popoverPresentationController){
+    actionSheet.popoverPresentationController.barButtonItem = trashButton_;
+  }
+
+  [self.navigationController presentViewController:actionSheet animated:YES completion:^{ }];
 }
 
 - (void) exportPhoto
@@ -568,19 +588,6 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    if ([dataSource_ respondsToSelector:@selector(exportImageAtIndex:fromBarButtonItem:)])
       [dataSource_ exportImageAtIndex:currentIndex_ fromBarButtonItem:exportButton_];
    
-   [self startChromeDisplayTimer];
-}
-
-
-#pragma mark -
-#pragma mark UIActionSheetDelegate
-
-// Called when a button is clicked. The view will be automatically dismissed after this call returns
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex 
-{
-   if (buttonIndex == BUTTON_DELETEPHOTO) {
-      [self deleteCurrentPhoto];
-   }
    [self startChromeDisplayTimer];
 }
 
