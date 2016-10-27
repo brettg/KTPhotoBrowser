@@ -39,6 +39,8 @@
    
    UIBarButtonItem *nextButton_;
    UIBarButtonItem *previousButton_;
+   UIBarButtonItem *trashButton_;
+   UIBarButtonItem *exportButton_;
 }
 
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;

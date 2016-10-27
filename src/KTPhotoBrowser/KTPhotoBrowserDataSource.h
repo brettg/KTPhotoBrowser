@@ -27,6 +27,7 @@
 
 - (void)deleteImageAtIndex:(NSInteger)index;
 - (void)exportImageAtIndex:(NSInteger)index;
+- (void)exportImageAtIndex:(NSInteger)index fromBarButtonItem:(UIBarButtonItem *)barButtonItem;
 
 - (CGSize)thumbSize;
 - (NSInteger)thumbsPerRow;

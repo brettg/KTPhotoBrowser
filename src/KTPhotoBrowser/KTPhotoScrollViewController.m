@@ -40,12 +40,12 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 
 @synthesize statusBarStyle = statusBarStyle_;
 
-
 - (void)dealloc 
 {
    [nextButton_ release], nextButton_ = nil;
    [previousButton_ release], previousButton_ = nil;
-   [scrollView_ release], scrollView_ = nil;
+   [trashButton_ release], trashButton_ = nil;
+   [exportButton_ release], exportButton_ = nil;
    [toolbar_ release], toolbar_ = nil;
    
    for (KTPhotoView *pv in photoViews_) {
@@ -107,18 +107,18 @@ const CGFloat ktkDefaultToolbarHeight = 44;
                       target:self
                       action:@selector(previousPhoto)];
    
-   UIBarButtonItem *trashButton = nil;
    if ([dataSource_ respondsToSelector:@selector(deleteImageAtIndex:)]) {
-     trashButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
-                                                                 target:self
-                                                                 action:@selector(trashPhoto)];
+     trashButton_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash
+                                                                  target:self
+                                                                  action:@selector(trashPhoto)];
    }
-   
-   UIBarButtonItem *exportButton = nil;
-   if ([dataSource_ respondsToSelector:@selector(exportImageAtIndex:)]){
-      exportButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
-                                                                   target:self
-                                                                   action:@selector(exportPhoto)];
+
+
+   if ([dataSource_ respondsToSelector:@selector(exportImageAtIndex:)] ||
+       [dataSource_ respondsToSelector:@selector(exportImageAtIndex:fromBarButtonItem:)]){
+      exportButton_ = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                    target:self
+                                                                    action:@selector(exportPhoto)];
    }
    
 
@@ -128,13 +128,13 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    
    NSMutableArray *toolbarItems = [[NSMutableArray alloc] initWithCapacity:7];
    
-   if (exportButton) [toolbarItems addObject:exportButton];
+   if (exportButton_) [toolbarItems addObject:exportButton_];
    [toolbarItems addObject:space];
    [toolbarItems addObject:previousButton_];
    [toolbarItems addObject:space];
    [toolbarItems addObject:nextButton_];
    [toolbarItems addObject:space];
-   if (trashButton) [toolbarItems addObject:trashButton];
+   if (trashButton_) [toolbarItems addObject:trashButton_];
    
    CGRect screenFrame = [[UIScreen mainScreen] bounds];
    CGRect toolbarFrame = CGRectMake(0, 
@@ -147,8 +147,6 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    [toolbar_ setItems:toolbarItems];
    [[self view] addSubview:toolbar_];
    
-   if (trashButton) [trashButton release];
-   if (exportButton) [exportButton release];
    [toolbarItems release];
    [space release];
 }
@@ -567,6 +565,8 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 {
    if ([dataSource_ respondsToSelector:@selector(exportImageAtIndex:)])
       [dataSource_ exportImageAtIndex:currentIndex_];
+   if ([dataSource_ respondsToSelector:@selector(exportImageAtIndex:fromBarButtonItem:)])
+      [dataSource_ exportImageAtIndex:currentIndex_ fromBarButtonItem:exportButton_];
    
    [self startChromeDisplayTimer];
 }
