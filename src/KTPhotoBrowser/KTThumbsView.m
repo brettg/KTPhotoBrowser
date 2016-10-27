@@ -106,7 +106,7 @@
    lastItemsPerRow_ = itemsPerRow;
    
    // Ensure a minimum of space between images.
-   int minimumSpace = 5;
+   int minimumSpace = 30.0f;
    if (visibleWidth - itemsPerRow * thumbSize_.width < minimumSpace) {
      itemsPerRow--;
    }

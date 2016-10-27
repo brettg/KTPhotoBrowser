@@ -29,7 +29,7 @@
    [scrollView setScrollEnabled:YES];
    [scrollView setAlwaysBounceVertical:YES];
    [scrollView setBackgroundColor:[UIColor whiteColor]];
-   
+
    if ([dataSource_ respondsToSelector:@selector(thumbsHaveBorder)]) {
       [scrollView setThumbsHaveBorder:[dataSource_ thumbsHaveBorder]];
    }
