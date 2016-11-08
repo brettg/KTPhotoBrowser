@@ -528,9 +528,9 @@ const CGFloat ktkDefaultToolbarHeight = 44;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView 
 {
    CGFloat pageWidth = scrollView.frame.size.width;
-   float fractionalPage = scrollView.contentOffset.x / pageWidth;
+   CGFloat fractionalPage = scrollView.contentOffset.x / pageWidth;
    NSInteger page = floor(fractionalPage);
-	if (page != currentIndex_) {
+	if (page != currentIndex_ && page >= 0) {
 		[self setCurrentIndex:page];
 	}
 }
